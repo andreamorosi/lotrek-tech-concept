@@ -361,7 +361,9 @@ function canvasCore() {
         let projectedPosition = position.applyMatrix4(element.matrixWorld).project(camera)
         console.log((projectedPosition.x + 1) / 2 * sceneContainer.clientWidth)
         document.querySelectorAll(".scene__two__floating--small")[key].style.left = ((projectedPosition.x + 1) / 2 * sceneContainer.clientWidth)+"px"
-        document.querySelectorAll(".scene__two__floating--small")[key].style.top = 25+(-(projectedPosition.y - 1) / 2 * sceneContainer.clientHeight)+"px"
+        document.querySelectorAll(".scene__two__floating--small")[key].style.top = (-(projectedPosition.y - 1) / 2 * sceneContainer.clientHeight)+"px"
+        document.querySelectorAll(".scene__two__floating--small")[key].style.opacity = 1
+        document.querySelectorAll(".scene__two__floating--small")[key].style.transform = "translate(-50%,-50%) scale(1)"
       })
 
     }
@@ -391,7 +393,7 @@ function canvasCore() {
 
           document.querySelector(".head__inner").classList.remove("active")
           document.querySelector(".head__title").classList.remove("active")
-          document.querySelector(".head__title").innerText = "observing planetOne"
+          document.querySelector(".head__title").innerText = 'observing planet identified as "About us"'
           setTimeout(() => {
             document.querySelector(".head__inner").classList.add("active")
             document.querySelector(".head__title").classList.add("active")
@@ -409,7 +411,7 @@ function canvasCore() {
 
           document.querySelector(".head__inner").classList.remove("active")
           document.querySelector(".head__title").classList.remove("active")
-          document.querySelector(".head__title").innerText = "observing planetTwo"
+          document.querySelector(".head__title").innerText = 'observing planet identified as "Tech stack"'
           setTimeout(() => {
             document.querySelector(".head__inner").classList.add("active")
             document.querySelector(".head__title").classList.add("active")
@@ -427,7 +429,7 @@ function canvasCore() {
 
           document.querySelector(".head__inner").classList.remove("active")
           document.querySelector(".head__title").classList.remove("active")
-          document.querySelector(".head__title").innerText = "observing planetThree"
+          document.querySelector(".head__title").innerText = 'observing planet identified as "Lab"'
           setTimeout(() => {
             document.querySelector(".head__inner").classList.add("active")
             document.querySelector(".head__title").classList.add("active")
@@ -445,7 +447,7 @@ function canvasCore() {
 
           document.querySelector(".head__inner").classList.remove("active")
           document.querySelector(".head__title").classList.remove("active")
-          document.querySelector(".head__title").innerText = "observing planetFour"
+          document.querySelector(".head__title").innerText = 'observing planet identified as "Works"'
           setTimeout(() => {
             document.querySelector(".head__inner").classList.add("active")
             document.querySelector(".head__title").classList.add("active")

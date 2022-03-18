@@ -1,6 +1,7 @@
 //title
 .title {
   @include title;
+  margin-bottom: $u;
 
   //title sizes
   &-1 {

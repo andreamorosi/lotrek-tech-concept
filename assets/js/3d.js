@@ -10,7 +10,6 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { AdditiveBlending, Float32BufferAttribute } from 'three'
 
-
 function canvasCore() {
 
   let container, stats;
@@ -99,13 +98,15 @@ function canvasCore() {
     mainPlanet.position.x = 0
     mainPlanet.position.y = 0
     mainPlanet.position.z = 24
-    mainPlanet.scale.set(3,3,3)
+    mainPlanet.scale.set(3, 3, 3)
     mainPlanet.material.opacity = 0
     mainPlanet.txtInfo = "mainPlanet text"
 
     // planetOne
     const geometryPlanetOne = new THREE.SphereGeometry(8, 64, 32);
     const materialPlanetOne = new THREE.MeshLambertMaterial({ color: 0x935CF2 });
+    materialPlanetOne.transparent = true
+    materialPlanetOne.opacity = 1
     var planetOne = new THREE.Mesh(geometryPlanetOne, materialPlanetOne);
     scene.add(planetOne);
     planetOne.position.x = -25
@@ -113,23 +114,29 @@ function canvasCore() {
     planetOne.position.z = 30
     planetOne.scale.set(0, 0, 0)
     planetOne.txtInfo = "planetOne text"
+    planetOne.planetName = "planetOne"
     planets.push(planetOne)
 
     // planetTwo
     const geometryPlanetTwo = new THREE.SphereGeometry(8, 64, 32);
-    const materialPlanet = new THREE.MeshLambertMaterial({ color: 0x935CF2 });
-    var planetTwo = new THREE.Mesh(geometryPlanetTwo, materialPlanet);
+    const materialPlanetTwo = new THREE.MeshLambertMaterial({ color: 0x935CF2 });
+    materialPlanetTwo.transparent = true
+    materialPlanetTwo.opacity = 1
+    var planetTwo = new THREE.Mesh(geometryPlanetTwo, materialPlanetTwo);
     scene.add(planetTwo);
     planetTwo.position.x = -11
     planetTwo.position.y = -6
     planetTwo.position.z = 46
     planetTwo.scale.set(0, 0, 0)
     planetTwo.txtInfo = "planetTwo text"
+    planetTwo.planetName = "planetTwo"
     planets.push(planetTwo)
 
     // planetThree
     const geometryPlanetThree = new THREE.SphereGeometry(8, 64, 32);
     const materialPlanetThree = new THREE.MeshLambertMaterial({ color: 0x935CF2 });
+    materialPlanetThree.transparent = true
+    materialPlanetThree.opacity = 1
     var planetThree = new THREE.Mesh(geometryPlanetThree, materialPlanetThree);
     scene.add(planetThree);
     planetThree.position.x = 16
@@ -137,11 +144,14 @@ function canvasCore() {
     planetThree.position.z = 30
     planetThree.scale.set(0, 0, 0)
     planetThree.txtInfo = "planetThree text"
+    planetThree.planetName = "planetThree"
     planets.push(planetThree)
 
     // planetFour
     const geometryPlanetFour = new THREE.SphereGeometry(8, 64, 32);
     const materialPlanetFour = new THREE.MeshLambertMaterial({ color: 0x935CF2 });
+    materialPlanetFour.transparent = true
+    materialPlanetFour.opacity = 1
     var planetFour = new THREE.Mesh(geometryPlanetFour, materialPlanetFour);
     scene.add(planetFour);
     planetFour.position.x = 22
@@ -149,6 +159,7 @@ function canvasCore() {
     planetFour.position.z = 30
     planetFour.scale.set(0, 0, 0)
     planetFour.txtInfo = "planetFour text"
+    planetFour.planetName = "planetFour"
     planets.push(planetFour)
 
     debug.push(mainPlanet)
@@ -190,10 +201,10 @@ function canvasCore() {
         const randomX = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
         const randomY = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
         const randomZ = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
-        
-        positions[i * 3] = Math.sin(branchAngle + spinAngle) * x * 15 + randomX  
+
+        positions[i * 3] = Math.sin(branchAngle + spinAngle) * x * 15 + randomX
         positions[i * 3 + 1] = randomY * 15
-        positions[i * 3 + 2] = Math.cos(branchAngle + spinAngle) * x  * 15 + randomZ 
+        positions[i * 3 + 2] = Math.cos(branchAngle + spinAngle) * x * 15 + randomZ
 
         //Color
 
@@ -225,7 +236,7 @@ function canvasCore() {
       points.rotation.x = 0.15
       points.rotation.z = -0.25
       points.material.opacity = 0
-      points.scale.set(0,0,0)
+      points.scale.set(0, 0, 0)
       console.log(points)
       scene.add(points)
 
@@ -250,19 +261,21 @@ function canvasCore() {
     * CONTROLS
     */
     setTimeout(() => {
-      console.log("controls ready")
+      console.log("controls ready - NOT!")
       dragControls = new DragControls([...scene.children], camera, renderer.domElement);
       dragControls.addEventListener('drag', render);
-      dragControls.enabled = true
+      dragControls.enabled = false
     }, 1000);
 
     // orbitControl
-    controls = new OrbitControls( camera, renderer.domElement );
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.enabled = false
     controlz = controls
 
     document.addEventListener('mousemove', onPointerMove);
 
-    document.addEventListener("dblclick", doubleClick)
+    //sceneContainer.addEventListener("dbclick", doubleClick)
+    //sceneContainer.addEventListener("click", checkUIEvents)
 
     //
 
@@ -281,10 +294,10 @@ function canvasCore() {
           document.querySelector(".head__title").classList.add("active")
           document.querySelector(".head__title").innerText = "break it! quick!"
 
-          new TWEEN.Tween(points.material).to({opacity: 1}, 750).easing(TWEEN.Easing.Quadratic.In).start()
-          new TWEEN.Tween(points.scale).to({ x:1, y:1, z: 1 }, 500).easing(TWEEN.Easing.Quadratic.Out).start()
+          new TWEEN.Tween(points.material).to({ opacity: 1 }, 750).easing(TWEEN.Easing.Quadratic.In).start()
+          new TWEEN.Tween(points.scale).to({ x: 1, y: 1, z: 1 }, 500).easing(TWEEN.Easing.Quadratic.Out).start()
 
-          new TWEEN.Tween(mainPlanet.material).to({opacity: 1}, 750).easing(TWEEN.Easing.Quadratic.In).start()
+          new TWEEN.Tween(mainPlanet.material).to({ opacity: 1 }, 750).easing(TWEEN.Easing.Quadratic.In).start()
           new TWEEN.Tween(mainPlanet.scale).to({ x: 1, y: 1, z: 1 }, 500).easing(TWEEN.Easing.Quadratic.In).start()
 
           setTimeout(() => {
@@ -304,36 +317,195 @@ function canvasCore() {
         document.querySelector(".head__inner").classList.add("active")
         document.querySelector(".head__title").classList.add("active")
       }, 500);
-      
 
-      new TWEEN.Tween(mainPlanet.material).to({opacity: 0}, 450).easing(TWEEN.Easing.Quadratic.In).start()
+
+      new TWEEN.Tween(mainPlanet.material).to({ opacity: 0 }, 450).easing(TWEEN.Easing.Quadratic.In).start()
       new TWEEN.Tween(mainPlanet.scale).to({ x: 3, y: 3, z: 3 }, 250).easing(TWEEN.Easing.Quadratic.In).onComplete(() => {
         mainPlanet.visible = false
-        mainPlanet.scale.set(0,0,0)
+        mainPlanet.scale.set(0, 0, 0)
         goPlanets()
       }).start()
     })
 
+    /*
+    * SECOND SCENE
+    * Button clicked -> going to planets 
+    */
     function goPlanets() {
+      console.log("SECOND SCENE")
+
       new TWEEN.Tween(planetOne.scale).to({ x: 1, y: 1, z: 1 }, 500).easing(TWEEN.Easing.Back.Out).start()
       new TWEEN.Tween(planetTwo.scale).to({ x: 1, y: 1, z: 1 }, 250).easing(TWEEN.Easing.Back.Out).start()
       new TWEEN.Tween(planetThree.scale).to({ x: 1, y: 1, z: 1 }, 750).easing(TWEEN.Easing.Back.Out).start()
       new TWEEN.Tween(planetFour.scale).to({ x: 1, y: 1, z: 1 }, 625).easing(TWEEN.Easing.Back.Out).start()
-      
-      parameters.insideColor = "#ff3c00"
+
+      //parameters.insideColor = "#ff3c00"
       //generateGalaxy()
 
       //new TWEEN.Tween(points.material).to({opacity: 1}, 450).easing(TWEEN.Easing.Quadratic.In).start()
-      new TWEEN.Tween(points.scale).to({ x: 1.5, y: 1.5, z: 2.5 }, 350).easing(TWEEN.Easing.Quadratic.In).start()
-      new TWEEN.Tween(points.material.color).to({ r:0.95,g:0.25,b:0.25 }, 350).easing(TWEEN.Easing.Quadratic.In).start()
-      
+      new TWEEN.Tween(points.scale).to({ x: 3, y: 3, z: 4.5 }, 350).easing(TWEEN.Easing.Quadratic.In).start()
+      //new TWEEN.Tween(points.material.color).to({ r:0.95,g:0.25,b:0.25 }, 350).easing(TWEEN.Easing.Quadratic.In).start()
+
       points.rotation.x = points.rotation.x + 0.1
       points.rotation.z = points.rotation.z - 0.1
       thetaFlag = false
 
       punti = points
-    
+
+      document.querySelector(".scene__two__maxifloat").classList.add("active")
+
+      planets.forEach((element, key) => {
+        console.log("---")
+        console.log(element)
+        let position = new THREE.Vector3(250, 250, 250)
+        let projectedPosition = position.applyMatrix4(element.matrixWorld).project(camera)
+        console.log((projectedPosition.x + 1) / 2 * sceneContainer.clientWidth)
+        document.querySelectorAll(".scene__two__floating--small")[key].style.left = ((projectedPosition.x + 1) / 2 * sceneContainer.clientWidth)+"px"
+        document.querySelectorAll(".scene__two__floating--small")[key].style.top = 25+(-(projectedPosition.y - 1) / 2 * sceneContainer.clientHeight)+"px"
+      })
+
     }
+
+    /*
+    * THIRD SCENE
+    * Planet event -> opening its "page"
+    */
+    function planetPage(planetN) {
+      document.querySelector(".scene__three").style.width = "calc(60% - " + document.querySelector(".band").clientWidth + "px)"
+      document.querySelector(".scene__three").style.height = "calc(100vh - " + document.querySelector(".head").clientHeight + "px)"
+      document.querySelector(".scene__three").style.right = document.querySelector(".band").clientWidth + "px"
+      sceneContainer.classList.add("blockcanvas")
+
+      setTimeout(() => {
+        document.querySelector(".scene__three").classList.add("active")
+        document.querySelector(".goback").classList.add("active")
+      }, 250)
+
+      switch (planetN) {
+        case "one":
+          new TWEEN.Tween(camera.position).to({ x: -16, y: 27, z: 66 }, 250).onComplete(() => camera.lookAt(planetOne.position)).start()
+
+          setTimeout(() => {
+            document.querySelector("#planetOne").classList.add("active")
+          }, 500)
+
+          document.querySelector(".head__inner").classList.remove("active")
+          document.querySelector(".head__title").classList.remove("active")
+          document.querySelector(".head__title").innerText = "observing planetOne"
+          setTimeout(() => {
+            document.querySelector(".head__inner").classList.add("active")
+            document.querySelector(".head__title").classList.add("active")
+          }, 500);
+
+          break;
+        //planetOne end
+
+        case "two":
+          new TWEEN.Tween(camera.position).to({ x: 10, y: -20, z: 69 }, 250).onComplete(() => camera.lookAt(planetTwo.position)).start()
+
+          setTimeout(() => {
+            document.querySelector("#planetTwo").classList.add("active")
+          }, 500)
+
+          document.querySelector(".head__inner").classList.remove("active")
+          document.querySelector(".head__title").classList.remove("active")
+          document.querySelector(".head__title").innerText = "observing planetTwo"
+          setTimeout(() => {
+            document.querySelector(".head__inner").classList.add("active")
+            document.querySelector(".head__title").classList.add("active")
+          }, 500);
+
+          break;
+        //planetTwo end
+
+        case "three":
+          new TWEEN.Tween(camera.position).to({ x: 55, y: 24, z: 26 }, 250).onComplete(() => camera.lookAt(planetThree.position)).start()
+
+          setTimeout(() => {
+            document.querySelector("#planetThree").classList.add("active")
+          }, 500)
+
+          document.querySelector(".head__inner").classList.remove("active")
+          document.querySelector(".head__title").classList.remove("active")
+          document.querySelector(".head__title").innerText = "observing planetThree"
+          setTimeout(() => {
+            document.querySelector(".head__inner").classList.add("active")
+            document.querySelector(".head__title").classList.add("active")
+          }, 500);
+
+          break;
+        //planetThree end
+
+        case "four":
+          new TWEEN.Tween(camera.position).to({ x: 57, y: -18, z: 26 }, 250).onComplete(() => camera.lookAt(planetFour.position)).start()
+
+          setTimeout(() => {
+            document.querySelector("#planetFour").classList.add("active")
+          }, 500)
+
+          document.querySelector(".head__inner").classList.remove("active")
+          document.querySelector(".head__title").classList.remove("active")
+          document.querySelector(".head__title").innerText = "observing planetFour"
+          setTimeout(() => {
+            document.querySelector(".head__inner").classList.add("active")
+            document.querySelector(".head__title").classList.add("active")
+          }, 500);
+
+          break;
+        //planetFour end
+
+        default:
+          break;
+      }
+    }
+
+    /*
+    * Buttons logic to advance to each planet (enabling scene__three)
+    */
+   function goToPlanet() {
+    document.querySelectorAll(".scene__two__floating--small").forEach(element => {
+       element.addEventListener("click", () => {
+         let planetID = element.id.split("goto-")[1]
+         document.querySelector(".scene__two__maxifloat").classList.remove("active")
+         planetPage(planetID)
+       })
+     })
+   }
+   goToPlanet()
+
+    /*
+    *  UI events - click and interactions
+    */
+    function checkUIEvents(event) {
+      if (ghostObj.planetName) {
+        console.log("You clicked a planet")
+        console.log(ghostObj.planetName)
+        planetPage(ghostObj.planetName)
+      }
+    }
+
+    /*
+    * goBack, aka going back from scene__three to scene__two
+    */
+    function goBack() {
+      document.querySelector(".goback").addEventListener("click", function () {
+        this.classList.remove("active")
+        document.querySelector(".scene__three").classList.remove("active")
+        sceneContainer.classList.remove("blockcanvas")
+        document.querySelector(".planetpage.active").classList.remove("active")
+        new TWEEN.Tween(camera.position).to({ x: 1, y: 1, z: 100 }, 250).onComplete(() => camera.lookAt(scene.position)).start()
+
+        document.querySelector(".head__inner").classList.remove("active")
+        document.querySelector(".head__title").classList.remove("active")
+        document.querySelector(".head__title").innerText = "pick a planet"
+        setTimeout(() => {
+          document.querySelector(".head__inner").classList.add("active")
+          document.querySelector(".head__title").classList.add("active")
+          document.querySelector(".scene__two__maxifloat").classList.add("active")
+        }, 500);
+      })
+    }
+    goBack()
 
   }
 
@@ -415,7 +587,7 @@ function canvasCore() {
     planets[3].position.x = planets[3].position.x + (Math.cos(theta) * - 0.0125)
     planets[3].position.y = planets[3].position.y + (Math.sin(theta) * 0.0125)
 
-    if(thetaFlag) {
+    if (thetaFlag) {
       points.rotation.y = theta * - 0.05
     } else {
       points.rotation.y = theta * - 0.01

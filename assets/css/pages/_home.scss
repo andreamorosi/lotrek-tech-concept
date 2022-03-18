@@ -116,6 +116,29 @@
   #sceneCanvas {
     width: 100%;
     height: 100vh;
+    pointer-events: initial;
+    user-select: none;
+
+    &.blockcanvas {
+      pointer-events: none;
+    }
+  }
+  &__maxifloat {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    
+    display: none;
+
+    &.active {
+      display: block;
+      z-index: 1000;
+    }
   }
   &__floating {
     position: fixed;
@@ -128,6 +151,23 @@
     opacity: 0;
 
     &.active {
+      opacity: 1;
+      transform: translate(-50%,-50%) scale(1);
+      pointer-events: initial;
+      transition: all $motion $m;
+    }
+
+    &--one {
+      transform: scale(1);
+      top: 37%;
+      left: 26%;
+      &.active {
+        opacity: 1;
+        pointer-events: initial;
+        transition: all $motion $m;
+      }
+    }
+    &--small {
       opacity: 1;
       transform: translate(-50%,-50%) scale(1);
       pointer-events: initial;
@@ -151,6 +191,16 @@
       transition: transform ease $m*2, opacity ease $m*2;
       opacity: 0;
       pointer-events: none;
+    }
+    &--small {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: $u*5;
+        height: $u*5;
+      }
     }
   }
 }
@@ -216,7 +266,7 @@
   width: 100%;
   bottom: 0%;
   right: 0%;
-  @include padding(1,1,1,1);  
+  @include padding(2,1,2,1);  
   transform-origin: bottom;
   transform: translateY(100%);
 
@@ -246,5 +296,110 @@
       transition: all $motion $m;
       transition-delay: $m/2;
     }
+  }
+}
+
+.goback {
+  position: absolute;
+  background-color: #ff0038;
+  line-height: 1;
+  width: $u*10;
+  height: $u*10;
+  z-index: 1;
+  overflow: hidden;
+  transition: all $motion $m;
+  transition-delay: $m*4;
+  transform-origin: left;
+  transform: translateX(-100%);
+  cursor: pointer;
+
+  &.active {
+    transform: translateZ(0);
+
+    svg {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  svg {
+    width: $u*10;
+    height: $u*10;
+    object-fit: contain;
+    transition: transform $motion $m, opacity $motion $m/2;
+    transition-delay: $m*6;
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+.scene__three {
+  color: $white;
+  background: rgba($black,0.9);
+  position: fixed;
+  top: 0%;
+  right: 0%;
+
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+  overflow: hidden;
+
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+
+  transform-origin: right;
+  transition: all $motion $m*2;
+  transform: translateX(100%);
+
+  &.active {
+    pointer-events: initial;
+    user-select: initial;
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
+
+.planetpage {
+  display: none;
+
+  &.active {
+    display: block;
+    .txtcool {
+      transform: translateY(0);
+    }
+  }
+  &__inner {
+    //@include gridgen;
+  }
+  &__content {
+    grid-column: 2/12;
+    grid-row: auto;
+    //@include spacer(1,1);
+    @include padding(4,2,4,2);
+  }
+  &__title {
+    padding-left: $u*10;
+  }
+}
+
+.txtcool {
+  display: inline-block;
+  transform: translateY(100%);
+  transform-origin: bottom;
+  transition: all $motion $m;
+  transition-delay: $m;
+
+  &.active {
+    transform: translateY(0);
+  }
+  &--slow {
+    transition-delay: $m*2;
+  }
+  &--slower {
+    transition-delay: $m*3;
+  }
+  &__wrapper {
+    overflow: hidden;
   }
 }

@@ -46,7 +46,7 @@
     align-items: center;
     justify-content: center;
 
-    transition: clip-path ease .25s;
+    transition: clip-path $motion .25s;
 
     //clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%, 100% 52%, 97.5% 50%, 100% 48%);
 
@@ -124,12 +124,14 @@
     }
   }
   &__floatitle {
+    position: relative;
     background: $black;
     color: $white;
     display: block;
     margin-bottom: $u*2;
     @include padding(1,1,1,1);
     opacity: .75;
+    
   }
   &__maxifloat {
     position: fixed;
@@ -193,14 +195,17 @@
     font-size: 4rem;
     padding: 1rem 2rem;
     will-change: transform;
-    transition: transform ease $m*2;
+    transition: transform $motion $m*2, background $motion $m;
     opacity: 1;
     animation: btnRotate 5s ease-in-out infinite;
     user-select: none;
-    cursor: pointer;
+    
 
+    &:hover {
+      background: rgba(251, 255, 0, 0.6);
+    }
     &.clicked {
-      transition: transform ease $m*2, opacity ease $m*2;
+      transition: transform $motion $m*2, opacity $motion $m*2;
       opacity: 0;
       pointer-events: none;
     }
@@ -323,7 +328,7 @@
   transition-delay: $m*2;
   transform-origin: left;
   transform: translateX(-100%);
-  cursor: pointer;
+  
 
   &.active {
     transform: translateZ(0);
